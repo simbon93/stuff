@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_height="match_parent"
-    tools:context="simone.bonvicini.travalert.travalert.MainActivity">
+    tools:context=".ui.activities.MainActivity">
+
+    <com.jaredrummler.android.widget.AnimatedSvgView
+        android:id="@+id/animated_svg_view"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="25dp"
+        app:animatedSvgFillColors="@array/pin"
+        app:animatedSvgGlyphStrings="@array/pin_colors"
+        app:animatedSvgFillStart="1200"
+        app:animatedSvgFillTime="1000"
+        app:animatedSvgImageSizeX="400"
+        app:animatedSvgImageSizeY="400"
+        app:animatedSvgTraceTime="2000"
+        app:animatedSvgTraceTimePerGlyph="1000"/>
 
     <Button
         android:id="@+id/maps_button"
@@ -17,4 +34,4 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
