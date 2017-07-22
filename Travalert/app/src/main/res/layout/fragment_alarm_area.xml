@@ -1,13 +1,98 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent"
-             tools:context="simone.bonvicini.travalert.travalert.ui.fragments.AlarmAreaFragment">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/s_spacing"
+              tools:context="simone.bonvicini.travalert.travalert.ui.fragments.AlarmAreaFragment">
 
     <TextView
-        android:textColor="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Alarm area"/>
+        android:layout_height="wrap_content"
+        android:text="@string/alarm_area"
+        android:textColor="@color/textColor"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/location_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/l_spacing"
+        android:backgroundTint="#616161"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s_spacing"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/decrement"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="@dimen/s_spacing"
+            android:text="-"
+            android:textSize="18dp"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/area"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            tools:text="100m"/>
+
+        <Button
+            android:id="@+id/increment"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/s_spacing"
+            android:textSize="18dp"
+            android:text="+"
+            android:textColor="@color/textColor"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s_spacing"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/back"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/back"
+            android:textColor="@color/textColor"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/next"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next"
+            android:textColor="@color/textColor"/>
+
+    </LinearLayout>
 
 </LinearLayout>

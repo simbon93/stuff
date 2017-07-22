@@ -4,34 +4,95 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context=".ui.activities.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.17"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/s_spacing">
+
+        <ImageButton
+            android:id="@+id/settings_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_margin="@dimen/m_spacing"
+            android:background="@android:color/transparent"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_settings"/>
+
+    </LinearLayout>
 
     <com.jaredrummler.android.widget.AnimatedSvgView
         android:id="@+id/animated_svg_view"
-        android:layout_width="180dp"
-        android:layout_height="180dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_gravity="center"
         android:layout_marginBottom="25dp"
-        app:animatedSvgFillColors="@array/pin"
-        app:animatedSvgGlyphStrings="@array/pin_colors"
+        android:visibility="gone"
+        app:animatedSvgFillColors="@array/pin_colors"
         app:animatedSvgFillStart="1200"
         app:animatedSvgFillTime="1000"
+        app:animatedSvgGlyphStrings="@array/pin"
         app:animatedSvgImageSizeX="400"
         app:animatedSvgImageSizeY="400"
         app:animatedSvgTraceTime="2000"
         app:animatedSvgTraceTimePerGlyph="1000"/>
 
-    <Button
-        android:id="@+id/maps_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to map!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.65"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="280dp"
+            android:src="@drawable/tripnapp_logo"/>
+
+        <Button
+            android:id="@+id/maps_button"
+            style="?attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/l_spacing"
+            android:background="@drawable/button_bg"
+            android:text="@string/go_to_map"
+            android:textSize="18dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/current_alarm_container"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.18"
+        android:gravity="right"
+        android:orientation="vertical"
+        android:padding="@dimen/s_spacing">
+
+        <TextView
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            android:text="@string/current_set_alarm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/current_alarm"
+            android:layout_marginTop="@dimen/s_spacing"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
 </LinearLayout>

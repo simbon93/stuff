@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#007f8c</color>
+    <color name="colorPrimaryLight">#e200bed2</color>
+
+
+    <color name="colorPrimaryDark">#006873</color>
+    <color name="colorAccent">#007f8c</color>
+    <color name="textColor">#616161</color>
+    <color name="area_color">#fd5c63</color>
+    <color name="area_color_transparent">#90fd5c63</color>
+    <color name="colorAccentTransparent">#6a0097a7</color>
     <color name="google_red">#EA4335</color>
     <color name="google_yellow">#FBBC05</color>
     <color name="google_blue">#4285F4</color>
     <color name="google_green">#34A853</color>
+    <color name="white">#FFFFFF</color>
 </resources>

@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.location.places.Place;
+
 import java.util.List;
 
 import simone.bonvicini.travalert.travalert.R;
+import simone.bonvicini.travalert.travalert.model.LocationAlarm;
 
 /**
  * Created by simone on 27/05/17.
@@ -20,11 +23,11 @@ public class TripAdapter extends BaseAdapter {
 
     private Context mContext;
 
-    private List<Address> mAddresses;
+    private List<LocationAlarm> mAddresses;
 
     private OnTripClickListener mListener;
 
-    public TripAdapter(Context context, List<Address> addresses, OnTripClickListener listener) {
+    public TripAdapter(Context context, List<LocationAlarm> addresses, OnTripClickListener listener) {
 
         mContext = context;
         mAddresses = addresses;
@@ -55,17 +58,17 @@ public class TripAdapter extends BaseAdapter {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
         view = layoutInflater.inflate(R.layout.trip_row, null);
 
-        final Address address = mAddresses.get(position);
+        final LocationAlarm locationAlarm = mAddresses.get(position);
 
         TextView trip = ((TextView) view.findViewById(R.id.trip_name));
-        trip.setText(address.getLocality());
+        trip.setText(locationAlarm.getDescription());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 if (mListener != null) {
-                    mListener.onTripSelected(address);
+                    mListener.onTripSelected(locationAlarm);
                 }
             }
         });
@@ -77,6 +80,6 @@ public class TripAdapter extends BaseAdapter {
 
     public interface OnTripClickListener{
 
-        void onTripSelected(Address address);
+        void onTripSelected(LocationAlarm place);
     }
 }

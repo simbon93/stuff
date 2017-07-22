@@ -1,0 +1,61 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+              android:orientation="vertical"
+              android:gravity="center_horizontal"
+             android:layout_height="match_parent"
+             tools:context="simone.bonvicini.travalert.travalert.ui.fragments.AlarmAreaFragment">
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirm"/>
+
+    <android.support.v7.widget.SwitchCompat
+        android:id="@+id/add_to_favorite"
+        android:layout_marginTop="@dimen/m_spacing"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_favourite"/>
+
+    <EditText
+        android:visibility="invisible"
+        android:id="@+id/alarm_name"
+        android:layout_marginTop="@dimen/m_spacing"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/l_spacing"
+        android:layout_marginRight="@dimen/l_spacing"
+        android:hint="name"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:layout_marginTop="@dimen/m_spacing"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="@string/back"
+            android:id="@+id/back"
+            style="?attr/borderlessButtonStyle"
+            android:textColor="@color/colorAccent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
+        <Button
+            style="?attr/borderlessButtonStyle"
+            android:id="@+id/set_alarm_button"
+            android:text="@string/set"
+            android:textColor="@color/area_color"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+</LinearLayout>

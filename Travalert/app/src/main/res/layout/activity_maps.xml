@@ -12,33 +12,13 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="1">
+        android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/map_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/m_spacing"
-                android:layout_marginRight="@dimen/m_spacing"
-                android:layout_marginTop="@dimen/m_spacing">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <SearchView
-                        android:id="@+id/map_searchView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"></SearchView>
-
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                       xmlns:tools="http://schemas.android.com/tools"
@@ -47,6 +27,39 @@
                       android:layout_width="match_parent"
                       android:layout_height="match_parent"
                       tools:context=".ui.activities.MapsActivity"/>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="@dimen/m_spacing"
+                android:layout_marginRight="@dimen/m_spacing"
+                android:layout_marginTop="@dimen/m_spacing"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="5dp">
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<SearchView-->
+                <!--android:id="@+id/map_searchView"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"></SearchView>-->
+
+                <!--</LinearLayout>-->
+                <!--</android.support.v7.widget.CardView>-->
+
+                <fragment
+                    android:id="@+id/place_autocomplete_fragment"
+                    android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    />
+
+            </android.support.v7.widget.CardView>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/saved_trips_button"
@@ -59,19 +72,20 @@
         </RelativeLayout>
 
         <android.support.v7.widget.CardView
+            android:id="@+id/options_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_weight="0.3"
-            android:visibility="gone"
-            app:cardCornerRadius="1dp">
+            android:visibility="visible"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="7dp">
 
             <FrameLayout
                 android:id="@+id/container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
             </FrameLayout>
         </android.support.v7.widget.CardView>
@@ -81,23 +95,45 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cardview_dark_background"
+        android:background="@color/white"
         android:clipToPadding="true"
+        android:elevation="7dp"
         android:orientation="vertical"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <LinearLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/listview"
+            <ImageView
+                android:layout_marginTop="@dimen/xs_spacing"
+                android:layout_marginBottom="@dimen/xs_spacing"
+                android:src="@drawable/ic_drag_handle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"/>
-        </ScrollView>
+                android:layout_height="wrap_content"/>
 
+            <TextView
+                android:layout_margin="@dimen/s_spacing"
+                android:textColor="@color/textColor"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:text="@string/favourites"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/listview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"/>
+            </ScrollView>
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>
