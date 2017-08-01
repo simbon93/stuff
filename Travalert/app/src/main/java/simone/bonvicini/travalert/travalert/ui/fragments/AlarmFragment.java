@@ -14,7 +14,9 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 import simone.bonvicini.travalert.travalert.R;
+import simone.bonvicini.travalert.travalert.helper.DateTimeHelper;
 import simone.bonvicini.travalert.travalert.model.LocationAlarm;
+import simone.bonvicini.travalert.travalert.services.DataService;
 import simone.bonvicini.travalert.travalert.ui.activities.MapsActivity;
 
 public class AlarmFragment extends Fragment {
@@ -29,6 +31,12 @@ public class AlarmFragment extends Fragment {
 
     private TextView mMinutes;
 
+    private TextView mAmPm;
+
+    private boolean mIs24h;
+
+    private boolean mAlarmSet;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,6 +45,7 @@ public class AlarmFragment extends Fragment {
         mCurrentLocationAlarm = mActivity.getSelectedLocationAlarm();
 
         mView = inflater.inflate(R.layout.fragment_alarm, container, false);
+        mIs24h = DataService.get(mActivity).getAlarmFormat() == 1;
 
         return mView;
     }
@@ -46,6 +55,16 @@ public class AlarmFragment extends Fragment {
         LinearLayout alarmContainer = (LinearLayout) mView.findViewById(R.id.alarm_container);
         mHours = (TextView) mView.findViewById(R.id.hours);
         mMinutes = (TextView) mView.findViewById(R.id.minutes);
+        mAmPm = (TextView) mView.findViewById(R.id.am_pm);
+
+        final Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 12);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        mHours.setText(DateTimeHelper.formatHours(c.getTime(), mIs24h));
+        mMinutes.setText(DateTimeHelper.formatMinutes(c.getTime()));
+        mAmPm.setVisibility(!mIs24h ? View.VISIBLE : View.GONE);
+        mAmPm.setText(DateTimeHelper.formatAmPm(c.getTime()));
 
         alarmContainer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,14 +77,19 @@ public class AlarmFragment extends Fragment {
         mView.findViewById(R.id.next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mActivity.computeViewFlow(true,null);
+
+                if (!mAlarmSet) {
+                    mActivity.updateTime(c);
+                }
+                mActivity.computeViewFlow(true, null);
             }
         });
 
         mView.findViewById(R.id.back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mActivity.computeViewFlow(false,null);
+
+                mActivity.computeViewFlow(false, null);
             }
         });
     }
@@ -88,11 +112,13 @@ public class AlarmFragment extends Fragment {
                 c.set(Calendar.SECOND, 0);
 
                 mActivity.updateTime(c);
-                mHours.setText(String.valueOf(hourOfDay));
-                mMinutes.setText(String.valueOf(minute));
+                mAlarmSet = true;
+                mHours.setText(DateTimeHelper.formatHours(c.getTime(), mIs24h));
+                mMinutes.setText(DateTimeHelper.formatMinutes(c.getTime()));
+                mAmPm.setText(DateTimeHelper.formatAmPm(c.getTime()));
 
             }
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
+        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), mIs24h);
 
         timePickerDialog.show();
     }

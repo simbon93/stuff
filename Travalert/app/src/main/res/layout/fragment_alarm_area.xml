@@ -14,21 +14,10 @@
         android:textSize="18sp"
         android:textStyle="bold"/>
 
-    <android.support.v7.widget.AppCompatSeekBar
-        android:id="@+id/location_area"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/l_spacing"
-        android:backgroundTint="#616161"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/s_spacing"
+        android:layout_marginTop="@dimen/l_spacing"
         android:gravity="center"
         android:orientation="horizontal">
 
@@ -39,8 +28,8 @@
             android:layout_height="match_parent"
             android:layout_marginRight="@dimen/s_spacing"
             android:text="-"
-            android:textSize="18dp"
             android:textColor="@color/textColor"
+            android:textSize="18dp"
             android:textStyle="bold"/>
 
         <TextView
@@ -59,12 +48,20 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/s_spacing"
-            android:textSize="18dp"
             android:text="+"
             android:textColor="@color/textColor"
+            android:textSize="18dp"
             android:textStyle="bold"/>
 
     </LinearLayout>
+
+    <android.support.v7.widget.AppCompatSeekBar
+        android:id="@+id/location_area"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/s_spacing"
+        android:backgroundTint="#616161"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     android:paddingTop="@dimen/m_spacing"
-    android:background="@color/white"
     tools:context="simone.bonvicini.travalert.travalert.ui.activities.SettingsActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
         android:layout_marginLeft="@dimen/m_spacing"
-        android:text="SettingSectionTitle"
-        android:textSize="16sp"
+        android:text="@string/alarm_settings_label"
+        android:textColor="@color/colorPrimary"
+        android:textSize="18sp"
         android:textStyle="bold"/>
 
     <LinearLayout
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/s_spacing"
             android:text="Default"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 
@@ -55,15 +55,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/s_spacing"
-            android:text="Setting content"/>
+            android:text="@string/hour_format"/>
 
         <TextView
-            android:id="@+id/setting1"
+            android:id="@+id/hour_format"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/s_spacing"
-            android:text="Setting"
-            android:textColor="@android:color/darker_gray"/>
+            android:textColor="@color/colorPrimaryDark"/>
 
     </LinearLayout>
 
@@ -82,16 +81,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/s_spacing"
-            android:text="Setting content"/>
+            android:text="@string/alarm_volume"/>
 
-        <TextView
-            android:id="@+id/setting2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/s_spacing"
-            android:text="Setting"
-            android:textColor="@android:color/darker_gray"/>
+            android:layout_marginTop="@dimen/m_spacing"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/alarm_volume_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Setting"
+                android:textColor="@android:color/darker_gray"/>
+
+            <TextView
+                android:id="@+id/alarm_volume"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/m_spacing"
+                android:textColor="@color/colorPrimary"
+                android:textSize="24dp"
+                android:textStyle="bold"
+                tools:text="4"/>
+
+        </LinearLayout>
     </LinearLayout>
 
     <View

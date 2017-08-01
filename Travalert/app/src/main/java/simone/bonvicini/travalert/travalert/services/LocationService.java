@@ -1,5 +1,6 @@
 package simone.bonvicini.travalert.travalert.services;
 
+import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -10,7 +11,10 @@ import android.os.IBinder;
 import android.os.Vibrator;
 import android.util.Log;
 
+import simone.bonvicini.travalert.travalert.alarm.AlarmController;
+import simone.bonvicini.travalert.travalert.alarm.WakeLocker;
 import simone.bonvicini.travalert.travalert.model.LocationAlarm;
+import simone.bonvicini.travalert.travalert.ui.activities.AlarmActivity;
 
 public class LocationService extends Service {
 
@@ -54,17 +58,37 @@ public class LocationService extends Service {
 
                     Log.d(TAG, "OnTargetReached: " + true);
 
-                    Vibrator vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
-                    vibrator.vibrate(2000);
-//                    String notificationMessage = mCentralPoint.getTitle() == null ? getString(R.string.notification_message) : mCentralPoint.getTitle();
-//                    NotificationHelper.showNotification(JecoLocationService.this, null, notificationMessage);
-//
+                    if (AlarmController.get() == null) {
+                        AlarmController.init(LocationService.this);
+                    }
+
+                    if (isScreenLocked(LocationService.this)) {
+                        WakeLocker.acquire(LocationService.this);
+                    }
+                    AlarmController.get().makeAlarmRing(AlarmController.AlarmType.LOCATION);
+                    startAlarmActivity(LocationService.this);
+                    if (isScreenLocked(LocationService.this)) {
+                        WakeLocker.release();
+                    }
+
                 } else {
 
                     Log.d(TAG, "OnTargetReached: " + false);
                 }
-
             }
+        }
+
+        private boolean isScreenLocked(Context context) {
+
+            KeyguardManager km = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
+            return km.inKeyguardRestrictedInputMode();
+        }
+
+        private void startAlarmActivity(Context context) {
+
+            Intent foregroundIntent = new Intent(context, AlarmActivity.class);
+            foregroundIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            context.startActivity(foregroundIntent);
         }
 
         @Override

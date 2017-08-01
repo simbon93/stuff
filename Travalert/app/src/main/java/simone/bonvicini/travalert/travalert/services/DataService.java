@@ -51,11 +51,24 @@ public class DataService {
         return prefs.getInt(serviceString(R.string.data_service_time_format), 0);
     }
 
-    public void setAlarmFrequency(int value) {
+    public void setAlarmFormat(int value) {
 
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(serviceString(R.string.data_service_time_format), value);
         log(serviceString(R.string.data_service_time_format), String.valueOf(value));
+        editor.apply();
+    }
+
+    public int getAlarmVolume() {
+
+        return prefs.getInt(serviceString(R.string.data_service_alarm_volume), 8);
+    }
+
+    public void setAlarmVolume(int value) {
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(serviceString(R.string.data_service_alarm_volume), value);
+        log(serviceString(R.string.data_service_alarm_volume), String.valueOf(value));
         editor.apply();
     }
 
@@ -72,9 +85,27 @@ public class DataService {
         editor.apply();
     }
 
+    public String getAlarmTone() {
+
+        return prefs.getString(serviceString(R.string.data_service_alarm_tone), "ringtone_1");
+    }
+
+    public void setAlarmTone(String value) {
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(serviceString(R.string.data_service_alarm_tone), value);
+        log(serviceString(R.string.data_service_alarm_tone), String.valueOf(value));
+        editor.apply();
+    }
+
     public LocationAlarm loadLocation() {
 
         return (LocationAlarm) mAndroidStore.loadObject(serviceString(R.string.data_service_saved_location_alarm), AndroidStore.StoreType.Persistent);
+    }
+
+    public void deleteLocation() {
+
+        mAndroidStore.removeObject(serviceString(R.string.data_service_saved_location_alarm), AndroidStore.StoreType.Persistent);
     }
 
     public void storeLocation(LocationAlarm location) {
@@ -97,20 +128,30 @@ public class DataService {
         mAndroidStore.storeObject(serviceString(R.string.data_service_favorite_alarms), favoriteLocations, AndroidStore.StoreType.Persistent);
     }
 
-    public void removeFavoriteLocation(LocationAlarm location) {
+    public List<LocationAlarm> removeFavoriteLocation(LocationAlarm location) {
 
         List<LocationAlarm> favoriteLocations = loadFavoriteLocations();
         if (favoriteLocations == null || favoriteLocations.isEmpty()) {
-            return;
+            return favoriteLocations;
         }
 
-        favoriteLocations.remove(location);
+        for (int i = favoriteLocations.size() - 1; i >= 0; i--) {
+
+            if (favoriteLocations.get(i).getLocation().equals(location.getLocation())
+                    && favoriteLocations.get(i).getDescription().equals(location.getDescription())) {
+
+                favoriteLocations.remove(i);
+                break;
+            }
+        }
+
         mAndroidStore.storeObject(serviceString(R.string.data_service_favorite_alarms), favoriteLocations, AndroidStore.StoreType.Persistent);
+        return favoriteLocations;
     }
 
-    private String serviceString(int resId){
+    private String serviceString(int resId) {
 
-        return  mContext.getString(resId);
+        return mContext.getString(resId);
     }
 
     private void log(String entity, String value) {

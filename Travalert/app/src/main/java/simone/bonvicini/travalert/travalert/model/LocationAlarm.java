@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.Serializable;
 import java.util.Calendar;
 
+import simone.bonvicini.travalert.travalert.ui.fragments.AlarmAreaFragment;
+
 /**
  * Created by simone on 27/05/17.
  */
@@ -19,7 +21,7 @@ public class LocationAlarm implements Serializable {
 
     private double mLongitude;
 
-    private int mRadius = 30;
+    private int mRadius = AlarmAreaFragment.SCALE;
 
     private Calendar mEmergencyAlarm;
 

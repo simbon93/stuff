@@ -1,5 +1,7 @@
 package simone.bonvicini.travalert.travalert.ui.fragments;
 
+import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import simone.bonvicini.travalert.travalert.R;
+import simone.bonvicini.travalert.travalert.helper.DialogHelper;
 import simone.bonvicini.travalert.travalert.model.LocationAlarm;
 import simone.bonvicini.travalert.travalert.ui.activities.MapsActivity;
 
@@ -18,7 +21,7 @@ public class AlarmAreaFragment extends Fragment {
 
     public static final int MIN = 1;
 
-    public static final int SCALE = 300;
+    public static final int SCALE = 50;
 
     private View mView;
 
@@ -27,6 +30,8 @@ public class AlarmAreaFragment extends Fragment {
     private LocationAlarm mCurrentLocationAlarm;
 
     private TextView mArea;
+
+    private boolean mInsideArea;
 
     private int mRadius;
 
@@ -60,18 +65,19 @@ public class AlarmAreaFragment extends Fragment {
         mArea.setText(getFormattedLabel(mRadius));
 
         final AppCompatSeekBar areaSeekBar = (AppCompatSeekBar) mView.findViewById(R.id.location_area);
-        areaSeekBar.setMax(300);
-        areaSeekBar.setProgress(mCurrentLocationAlarm.getRadius()*10/SCALE+MIN);
+        areaSeekBar.setMax(199);
+        areaSeekBar.setProgress(mCurrentLocationAlarm.getRadius() / SCALE - MIN);
         areaSeekBar.setKeyProgressIncrement(1);
         areaSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                int radius = ((MIN + progress) * SCALE) / 10;
+                int radius = ((MIN + progress) * SCALE);
                 mArea.setText(getFormattedLabel(radius));
                 mActivity.updateRadius(radius);
                 mActivity.drawCircle(radius);
+                checkIfInsideArea(radius);
             }
 
             @Override
@@ -89,7 +95,16 @@ public class AlarmAreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                mActivity.computeViewFlow(true, null);
+                if (mInsideArea) {
+                    DialogHelper.showDialog(mActivity, getString(R.string.inside_alarm_area_warning), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                } else {
+                    mActivity.computeViewFlow(true, null);
+                }
             }
         });
 
@@ -105,7 +120,7 @@ public class AlarmAreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                areaSeekBar.setProgress(areaSeekBar.getProgress()+1);
+                areaSeekBar.setProgress(areaSeekBar.getProgress() + 1);
             }
         });
 
@@ -113,9 +128,22 @@ public class AlarmAreaFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                areaSeekBar.setProgress(areaSeekBar.getProgress()-1);
+                areaSeekBar.setProgress(areaSeekBar.getProgress() - 1);
             }
         });
+    }
+
+    public void checkIfInsideArea(int radius) {
+
+        Location userLocation = new Location("");
+        userLocation.setLatitude(mActivity.getUserLocation().latitude);
+        userLocation.setLongitude(mActivity.getUserLocation().longitude);
+
+        Location targetLocation = new Location("");
+        targetLocation.setLatitude(mCurrentLocationAlarm.getLocation().latitude);
+        targetLocation.setLongitude(mCurrentLocationAlarm.getLocation().longitude);
+
+        mInsideArea = userLocation.distanceTo(targetLocation) < radius;
     }
 
     private String getFormattedLabel(int radius) {

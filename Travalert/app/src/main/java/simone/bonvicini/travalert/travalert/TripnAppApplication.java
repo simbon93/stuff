@@ -2,7 +2,8 @@ package simone.bonvicini.travalert.travalert;
 
 import android.app.Application;
 
-import simone.bonvicini.travalert.travalert.helper.MediaHelper;
+import simone.bonvicini.travalert.travalert.alarm.AlarmController;
+import simone.bonvicini.travalert.travalert.alarm.AlarmScheduler;
 
 /**
  * Created by simone on 22/07/2017.
@@ -14,7 +15,7 @@ public class TripnAppApplication extends Application {
     public void onCreate() {
 
         super.onCreate();
-
-        //MediaHelper.get(this).fetchRingtones();
+        AlarmController.init(getApplicationContext());
+        AlarmScheduler.init(getApplicationContext());
     }
 }

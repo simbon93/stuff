@@ -52,6 +52,8 @@ import java.util.Date;
 import java.util.List;
 
 import simone.bonvicini.travalert.travalert.R;
+import simone.bonvicini.travalert.travalert.alarm.AlarmController;
+import simone.bonvicini.travalert.travalert.alarm.AlarmScheduler;
 import simone.bonvicini.travalert.travalert.helper.MapHelper;
 import simone.bonvicini.travalert.travalert.helper.MetricsHelper;
 import simone.bonvicini.travalert.travalert.model.LocationAlarm;
@@ -74,7 +76,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private LatLng mUserLocation;
 
-    private Marker mUserMarker;
+    private TripAdapter mAdapter;
 
     @Override
     public void onMarkerDragStart(Marker marker) {
@@ -97,6 +99,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         dragLocation.setTime(new Date().getTime());
         updateLocation(dragLocation);
         drawCircle(mSelectedLocationAlarm.getRadius());
+    }
+
+    public LatLng getUserLocation() {
+
+        return mUserLocation;
     }
 
     @Override
@@ -149,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
 
-        TripAdapter adapter = new TripAdapter(this, addresses, new TripAdapter.OnTripClickListener() {
+        mAdapter = new TripAdapter(this, addresses, new TripAdapter.OnTripClickListener() {
             @Override
             public void onTripSelected(LocationAlarm locationAlarm) {
 
@@ -158,9 +165,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 computeViewFlow(true, null);
                 drawCircle(mSelectedLocationAlarm.getRadius());
             }
+
+            @Override
+            public void onTripDeleted(LocationAlarm place) {
+
+                mAdapter.setAlarms(DataService.get(MapsActivity.this).removeFavoriteLocation(place));
+                fillTripList(mAdapter);
+            }
         });
 
-        fillTripList(adapter);
+        fillTripList(mAdapter);
     }
 
     private void initUi() {
@@ -264,13 +278,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Log.d(TAG, "options weight: " + options);
         Log.d(TAG, "map weight: " + map);
-    }
-
-    private void changeContainerWeight(boolean fullscreen) {
-
-        LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) mMapContainer.getLayoutParams();
-        lp.weight = fullscreen ? 10 : 7;
-        mMapContainer.setLayoutParams(lp);
     }
 
     private void pushFragment(MapView mapView, Bundle bundle, boolean ahead) {
@@ -388,9 +395,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     mSelectedLocationAlarm = new LocationAlarm(place.getLatLng(), place.getName().toString());
                     computeViewFlow(true, null);
                 }
-                mMap.addMarker(new MarkerOptions().position(place.getLatLng()).draggable(true));
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
-                drawCircle(mSelectedLocationAlarm.getRadius());
+
+                addSelectedPositionMarker();
+//                mMap.addMarker(new MarkerOptions().position(place.getLatLng()).draggable(true));
+//                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 15));
+//                drawCircle(mSelectedLocationAlarm.getRadius());
                 Log.i(TAG, "Place: " + place.getName());//get place details here
             }
 
@@ -497,6 +506,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         bundle.putSerializable(EXTRA_LOCATION, mSelectedLocationAlarm);
         intent.putExtras(bundle);
         startService(intent);
+
+        AlarmScheduler.get().setAlarm(mSelectedLocationAlarm);
         finish();
     }
 
@@ -523,7 +534,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void addSelectedPositionMarker() {
 
-        BitmapDescriptor icon = MapHelper.getMapIcon(R.drawable.ic_pin_drop, this);
+        BitmapDescriptor icon = MapHelper.getMapIcon(R.drawable.ic_location, this);
         mMap.addMarker(new MarkerOptions().position(mSelectedLocationAlarm.getLocation()).icon(icon));
         drawCircle(mSelectedLocationAlarm.getRadius());
     }
@@ -540,15 +551,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mClient, mLocationRequest, this);
         }
+        AlarmController.get().setGpsDisabled(false);
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-
+        AlarmController.get().setGpsDisabled(true);
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+        AlarmController.get().setGpsDisabled(true);
     }
 }
